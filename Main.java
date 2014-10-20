@@ -1,16 +1,12 @@
-package tp.pr1; //paquete principal
-/**
- * 
- * @author Alexis y Pablo
- * Inicio del programa que simular√° el juego
- *
- */
+package tp.pr1;
 
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println("hola mundo");
+		// CREAR PARTIDA VACÕA
+		Tablero tablero = new Tablero(4,4);
+		Controlador controlador = new Controlador();
+		controlador.nuevaPartida();
 	}
 
 }
