@@ -7,25 +7,29 @@ public class Controlador {
 /**
  * Solicita una orden al usuario	
  */
-	public void run(){						
+	public void run(){	
 		String orden;
 		int incorrecto;
+		int columna;
 		boolean salir = false;
+		this.in = new Scanner(System.in);
 		do{
 			incorrecto = 0;
-			System.out.println("Qué deseas hacer: (salir,poner,deshacer,reiniciar) ");			
-			orden = this.in.next();
-				
-			if(orden.equals("poner")){
-				System.out.println(orden);
+			System.out.println(partida.cabecera());		
+			orden = this.in.next();				
+			if(orden.equalsIgnoreCase("poner")){
+				System.out.println("Introduce la columna: ");
+				columna = this.in.nextInt();this.in.nextLine();
+				partida.ejecutaMovimiento(partida.getTurno(), columna);
+				System.out.println(partida);
 			}
-			else if(orden.equals("poner")){
+			else if(orden.equalsIgnoreCase("deshacer")){
 				
 			}
-			else if(orden.equals("reiniciar")){
+			else if(orden.equalsIgnoreCase("reiniciar")){
 				
 			}
-			else if(orden.equals("salir")){
+			else if(orden.equalsIgnoreCase("salir")){
 				salir = true;
 			}
 			else{
@@ -36,9 +40,7 @@ public class Controlador {
 		while ((!partida.esTerminada() || incorrecto == 1) && !salir);
 	}
 	
-	public void nuevaPartida(){
-		this.partida = new Partida();
-		this.in = new Scanner(System.in);
-		this.run();
+	public void nuevaPartida(Partida refPartida){
+		this.partida = refPartida;		
 	}
 }
