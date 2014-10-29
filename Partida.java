@@ -14,7 +14,7 @@ public class Partida {
 	public Partida(){
 		this.undoStack = new int[10];
 		this.terminada = false;
-		this.tablero = new Tablero(8,8);
+		this.tablero = new Tablero(4,4);
 		this.tablero.iniciarTableroVacio(Ficha.VACIA);
 		this.turno = Ficha.BLANCA;
 	}
@@ -29,11 +29,42 @@ public class Partida {
  */
 	public boolean ejecutaMovimiento(Ficha color, int col){
 		boolean OK = true;
+		int fila;
 		this.terminada = false;
-		if(col <= this.tablero.getAlto()){
-			this.tablero.insertaFicha(color, col, this.turno);
+		if(col < this.tablero.getAncho() && col > 0){
+			fila = this.getFilaVacia(col);
+			if(fila != -1)
+				this.tablero.insertaFicha(this.turno,fila, col);
+			else
+				OK = false;
 		}
+		else
+			OK = false;
 		return OK;
+	}
+/**
+ * COMPROBAR LA FILA VACIA EN EL TABLERO CUANDO TENG ALA MISMA COLUMNA	
+ * @param col
+ * @return
+ */
+	private int getFilaVacia(int col){
+		int fila=-1,i=0;
+		boolean vacia=false;
+		while(i < this.tablero.getAlto() && !vacia ){
+				if(this.tablero.getColorPosicion(i, col) == this.turno.VACIA){
+					fila = i; 
+					vacia = true;
+				}
+			i++;
+		}	
+		return fila;
+	}
+	
+	public void turnoSiguiente(){
+		if(this.turno == turno.BLANCA)
+			this.turno = turno.NEGRA;
+		else
+			this.turno = turno.BLANCA;
 	}
 /**
  * CONSULTAMOS SI LA PARTIDA HA TERMINADO
@@ -64,15 +95,30 @@ public class Partida {
  */
 	public String cabecera(){
 		String interfaz="";
-		interfaz = "Juega ";
-		
-		if(this.turno == turno.BLANCA)
-			interfaz = interfaz + "Blancas";
-		else if(this.turno == turno.NEGRA)
-			interfaz = interfaz + "Negras";
-		
+		interfaz = "Juega "+this.pintarTurno();		
 		interfaz = interfaz + System.getProperty("line.separator");
-		interfaz = interfaz + "QuÃ© deseas hacer? ";
+		interfaz = interfaz + "Qué deseas hacer? ";
 		return interfaz;
+	}
+/**
+ * MOSTRAMOS EL TURNO.
+ * @return
+ */
+	public String pintarTurno(){
+		String jugador="";
+		if(this.turno == turno.BLANCA)
+			jugador = jugador + "Blancas";
+		else if(this.turno == turno.NEGRA)
+			jugador = jugador + "Negras";
+		return jugador;
+	}
+	
+	public boolean partidaLlena(){
+		boolean llena=true;
+		int j = this.tablero.getAlto()-1;
+		for(int i=0; i < this.tablero.getAncho() ; i++)
+				if(this.tablero.getColorPosicion(j, i) == this.turno.VACIA)
+					llena = false;
+		return llena;
 	}
 }

@@ -18,10 +18,20 @@ public class Controlador {
 			System.out.println(partida.cabecera());		
 			orden = this.in.next();				
 			if(orden.equalsIgnoreCase("poner")){
-				System.out.println("Introduce la columna: ");
-				columna = this.in.nextInt();this.in.nextLine();
-				partida.ejecutaMovimiento(partida.getTurno(), columna);
-				System.out.println(partida);
+				if(!partida.esTerminada()){
+					System.out.println("Introduce la columna: ");
+					columna = this.in.nextInt();this.in.nextLine();
+					if(partida.ejecutaMovimiento(partida.getTurno(), columna)){
+						System.out.println(partida);
+						this.partida.turnoSiguiente();
+					}
+					else{					
+						System.out.println("Movimiento incorrecto");
+						System.out.println(partida);
+					}
+				}
+				else
+					System.out.println("Partida Ganada por: " + partida.pintarTurno());
 			}
 			else if(orden.equalsIgnoreCase("deshacer")){
 				
@@ -34,10 +44,12 @@ public class Controlador {
 			}
 			else{
 				System.out.println("Orden incorrecta");
-				incorrecto = 1;
+				incorrecto = 1;			
 			}
 		}
-		while ((!partida.esTerminada() || incorrecto == 1) && !salir);
+		while ((!this.partida.esTerminada() || incorrecto == 1) && !salir );
+		
+		//System.out.println("partida llena");
 	}
 	
 	public void nuevaPartida(Partida refPartida){

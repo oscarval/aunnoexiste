@@ -47,13 +47,17 @@ public class Tablero {
  * @param columna
  * @return
  */
-	public boolean insertaFicha(Ficha color,int columna, Ficha turno){
-			for(int i=0; i < this.alto; i++){
-				if(this.tablero[i][columna] == color.BLANCA){
-					this.tablero[i][columna] = turno;
-				}
-			}
-		return true;
+	public void insertaFicha( Ficha color,int fila, int columna){		
+		this.tablero[fila][columna-1] = color;
+	}
+/**
+ * RETORNAMOS EL COLOR DE LA FICHA EN DICHA POSICION 
+ * @param fila
+ * @param col
+ * @return
+ */
+	public Ficha getColorPosicion(int fila, int col){
+		return this.tablero[fila][col-1];
 	}
 /**
  * 	DEVUELVE EL TABLERO A PINTAR	
@@ -61,13 +65,13 @@ public class Tablero {
 	public String toString(){
 		String lineas="";
 		String cabecera="|";
-		for(int i=1; i < this.ancho; i++)
+		for(int i=1; i <= this.ancho; i++)
 			cabecera = cabecera + i;
 		cabecera = cabecera + "|" + System.getProperty("line.separator");
 		for(int i=this.alto-1; i >= 0; i--){
 			lineas = lineas + "|";
 			for(int j=0; j < this.ancho-1; j++){
-				lineas = lineas + this.tablero[i][j]; 
+				lineas = lineas + this.tablero[i][j].toString(); 
 			}
 			lineas = lineas + "|\n";
 		}
