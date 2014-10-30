@@ -48,7 +48,7 @@ public class Tablero {
  * @return
  */
 	public void insertaFicha( Ficha color,int fila, int columna){		
-		this.tablero[fila][columna-1] = color;
+		this.tablero[columna-1][fila] = color;
 	}
 /**
  * RETORNAMOS EL COLOR DE LA FICHA EN DICHA POSICION 
@@ -56,8 +56,8 @@ public class Tablero {
  * @param col
  * @return
  */
-	public Ficha getColorPosicion(int fila, int col){
-		return this.tablero[fila][col-1];
+	public Ficha getColorPosicion(int col, int fila){
+		return this.tablero[col][fila];
 	}
 /**
  * 	DEVUELVE EL TABLERO A PINTAR	
@@ -68,19 +68,24 @@ public class Tablero {
 		for(int i=1; i <= this.ancho; i++)
 			cabecera = cabecera + i;
 		cabecera = cabecera + "|" + System.getProperty("line.separator");
-		for(int i=this.alto-1; i >= 0; i--){
+		for(int i=this.alto-1; i>=0 ; i--){
 			lineas = lineas + "|";
-			for(int j=0; j < this.ancho-1; j++){
-				lineas = lineas + this.tablero[i][j].toString(); 
+			for(int j=0; j < this.ancho; j++){
+				lineas = lineas + this.tablero[j][i].toString();
 			}
-			lineas = lineas + "|\n";
+			lineas = lineas +"|"+ System.getProperty("line.separator");
 		}
 		return lineas+cabecera;
 	}
-	
-	public void iniciarTableroVacio(Ficha color){
-		for(int i=0; i < this.alto; i++)
-			for(int j=0; j < this.ancho; j++)
-				this.tablero[i][j] = color;
+/**
+ * INICIA EL TABLERO CON FICHAS VACIAS	
+ * @param color
+ */
+	public void iniciarTableroVacio(){
+		for(int i=0; i < this.alto; i++){
+			for(int j=0; j < this.ancho; j++){
+				this.tablero[j][i] = Ficha.VACIA;
+			}
+		}
 	}
 }

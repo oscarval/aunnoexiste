@@ -14,8 +14,8 @@ public class Partida {
 	public Partida(){
 		this.undoStack = new int[10];
 		this.terminada = false;
-		this.tablero = new Tablero(4,4);
-		this.tablero.iniciarTableroVacio(Ficha.VACIA);
+		this.tablero = new Tablero(7,6);
+		this.tablero.iniciarTableroVacio();
 		this.turno = Ficha.BLANCA;
 	}
 /**
@@ -33,17 +33,21 @@ public class Partida {
 		this.terminada = false;
 		if(col < this.tablero.getAncho() && col > 0){
 			fila = this.getFilaVacia(col);
-			if(fila != -1)
+			if(fila != -1){
 				this.tablero.insertaFicha(this.turno,fila, col);
+				if(this.existeGanador())//llamamos a la funcion para saber si existe ganador
+					this.terminada = true;
+			}
 			else
 				OK = false;
 		}
 		else
 			OK = false;
+		
 		return OK;
 	}
 /**
- * COMPROBAR LA FILA VACIA EN EL TABLERO CUANDO TENG ALA MISMA COLUMNA	
+ * COMPROBAR LA FILA VACIA EN EL TABLERO CUANDO TENGA LA MISMA COLUMNA	
  * @param col
  * @return
  */
@@ -51,7 +55,7 @@ public class Partida {
 		int fila=-1,i=0;
 		boolean vacia=false;
 		while(i < this.tablero.getAlto() && !vacia ){
-				if(this.tablero.getColorPosicion(i, col) == this.turno.VACIA){
+				if(this.tablero.getColorPosicion(col-1,i) == this.turno.VACIA){
 					fila = i; 
 					vacia = true;
 				}
@@ -97,7 +101,7 @@ public class Partida {
 		String interfaz="";
 		interfaz = "Juega "+this.pintarTurno();		
 		interfaz = interfaz + System.getProperty("line.separator");
-		interfaz = interfaz + "Qué deseas hacer? ";
+		interfaz = interfaz + "Quï¿½ deseas hacer? ";
 		return interfaz;
 	}
 /**
@@ -112,13 +116,58 @@ public class Partida {
 			jugador = jugador + "Negras";
 		return jugador;
 	}
-	
+/**
+ * 	COMPRUEBA SI LA PARTIDA SE HA LLENADO TOTALMENTE
+ * @return
+ */
 	public boolean partidaLlena(){
 		boolean llena=true;
 		int j = this.tablero.getAlto()-1;
 		for(int i=0; i < this.tablero.getAncho() ; i++)
-				if(this.tablero.getColorPosicion(j, i) == this.turno.VACIA)
+				if(this.tablero.getColorPosicion(i,j) == this.turno.VACIA)
 					llena = false;
 		return llena;
+	}
+/**
+ * COMPRUEBA SI HAY UN GANADOR CON 4 FICHAS SEGUIDAS
+ * @return un valor booleano si hay ganador
+ */
+	private boolean existeGanador(){
+		boolean finish=false;
+		int validos = 0,i=0,j=0;
+//		Comprobamos en horizontal
+		while(i <this.tablero.getAlto()){
+			j=0;
+			while(j <this.tablero.getAncho() && !finish){
+				if(this.tablero.getColorPosicion(j, i) == this.turno){
+					validos++;
+				}else{
+					validos=0;
+				}
+				if(validos > 3)
+					finish=true;
+				j++;
+			}
+			i++;
+		}
+		i=0;j=0;
+		if(validos < 4)
+			validos = 0;
+//		Comprobamos en vertical
+		while(i <this.tablero.getAncho() && !finish){
+			j=0;
+			while(j <this.tablero.getAlto()){
+				if(this.tablero.getColorPosicion(i, j) == this.turno ){
+					validos++;
+				}else{
+					validos=0;
+				}	
+				if(validos > 3)
+					finish=true;
+				j++;			
+			}
+			i++;
+		}
+		return finish;
 	}
 }

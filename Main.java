@@ -1,14 +1,14 @@
 package tp.pr1;
+import java.util.Scanner;
 
 public class Main {
-
+	private static Scanner in = new Scanner(System.in);
 	public static void main(String[] args) {
-//		CREAR PARTIDA VACÍA
-		Partida partida = new Partida();
+//		CREAR PARTIDA VACï¿½A
+		Partida partida = new Partida(); 
 //		CRAER CONTROLADOR
-		Controlador controlador = new Controlador();
-//		LANZAMOS LA EJECUCIÓN DEL JUEGO CON LA PARTIDA VACÍA
-		controlador.nuevaPartida(partida);
+		Controlador controlador = new Controlador(partida, in);
+//		LANZAMOS LA EJECUCIï¿½N DEL JUEGO CON LA PARTIDA VACï¿½A
 		controlador.run();
 	}
 
