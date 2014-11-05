@@ -37,7 +37,13 @@ public class Controlador {
 					}
 				}
 				else if(orden.equalsIgnoreCase("deshacer")){
-					
+					if(this.partida.deshacer()){
+						System.out.println(partida);
+						this.partida.turnoSiguiente();
+					}else{
+						System.out.println("Movimiento incorrecto");
+						System.out.println(partida);
+					}
 				}
 				else if(orden.equalsIgnoreCase("reiniciar")){
 					
@@ -50,10 +56,23 @@ public class Controlador {
 					incorrecto = 1;			
 				}
 		}
-		while ((!terminada || incorrecto == 1) && !salir );
+		while ((!terminada || incorrecto == 1) && !salir && !partida.partidaLlena());
 		
-		System.out.println("Partida Ganada por: " + partida.pintarTurno());
+		if (salir == true) 			//	Si ha seleccionado salir
+		{
+			System.out.println("Te has retirado!") ;
+		}
+	
+		else if (this.partida.existeGanador())			// Si ha ganado alguien
+		{
+	
+			System.out.println("Partida Ganada por: " + partida.getGanador());
+		}	
+	
+		else if (partida.partidaLlena())  		// Si esta llena
+		{
+			System.out.println("Partida llena");
+		}
 		
-		//System.out.println("partida llena");
 	}
 }

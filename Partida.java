@@ -6,18 +6,51 @@ public class Partida {
 	private Ficha turno;
 	private boolean terminada;
 	private Ficha ganador;
-	private int[] undoStack;
-	private int numUndo;
+	private Pila pila;
 /**
  * CONTRUCTORA INCIAL: Define la capacidad de la pila de Deshacer, inicializa el tablero y sede el turno a blancas
  */
 	public Partida(){
-		this.undoStack = new int[10];
+		this.pila = new Pila();
 		this.terminada = false;
-		this.tablero = new Tablero(7,6);
+		this.tablero = new Tablero(4,4);
 		this.tablero.iniciarTableroVacio();
 		this.turno = Ficha.BLANCA;
 	}
+/**
+ * PONER MOVIMIENTO (COLUMNA) EN LA PILA
+ * @param col
+ */
+	private void ponerStack(int col){
+		this.pila.poner(col-1);
+	}
+	
+	private int sacarStack(){
+		return this.pila.sacar();
+	}
+	
+	public boolean deshacer(){
+		boolean ok=false;
+		int colum = this.sacarStack();
+		if(colum != -1){
+			this.deshacerFicha(colum);
+			ok = true;
+		}
+		return ok;
+	}
+	
+	private void deshacerFicha(int colum){
+		int i= this.tablero.getAlto()-1;
+		boolean finish=false;
+		while( i >=0 && !finish){
+			if(this.tablero.getColorPosicion(colum, i) != Ficha.VACIA){
+				this.tablero.insertaFicha(Ficha.VACIA, i, colum);
+				finish = true;
+			}
+			i--;
+		}
+	}
+	
 /**
  * COLOCAR UNA FICHA EN COLUMNA CORRESPONDIENTE
  * DEFINE EL TURNO EN EL TABLERO
@@ -31,12 +64,16 @@ public class Partida {
 		boolean OK = true;
 		int fila;
 		this.terminada = false;
-		if(col < this.tablero.getAncho() && col > 0){
+		if(col <= this.tablero.getAncho() && col > 0){
 			fila = this.getFilaVacia(col);
 			if(fila != -1){
-				this.tablero.insertaFicha(this.turno,fila, col);
-				if(this.existeGanador())//llamamos a la funcion para saber si existe ganador
+				this.tablero.insertaFicha(this.turno,fila, col-1);
+				if(this.existeGanador()){//llamamos a la funcion para saber si existe ganador
 					this.terminada = true;
+					this.ganador = this.turno;
+				}
+				else
+					this.ponerStack(col);
 			}
 			else
 				OK = false;
@@ -110,9 +147,21 @@ public class Partida {
  */
 	public String pintarTurno(){
 		String jugador="";
-		if(this.turno == turno.BLANCA)
+		if(this.turno == Ficha.BLANCA)
 			jugador = jugador + "Blancas";
-		else if(this.turno == turno.NEGRA)
+		else if(this.turno == Ficha.NEGRA)
+			jugador = jugador + "Negras";
+		return jugador;
+	}
+/**
+ * DEVUELVE EL GANADOR DE LA PARTIDA	
+ * @return
+ */
+	public String getGanador(){
+		String jugador="";
+		if(this.ganador == Ficha.BLANCA)
+			jugador = jugador + "Blancas";
+		else if(this.ganador == Ficha.NEGRA)
 			jugador = jugador + "Negras";
 		return jugador;
 	}
@@ -132,12 +181,13 @@ public class Partida {
  * COMPRUEBA SI HAY UN GANADOR CON 4 FICHAS SEGUIDAS
  * @return un valor booleano si hay ganador
  */
-	private boolean existeGanador(){
+	public boolean existeGanador(){
 		boolean finish=false;
-		int validos = 0,i=0,j=0;
+		int validos = 0,i=0,j=0,k=0;
 //		Comprobamos en horizontal
 		while(i <this.tablero.getAlto()){
 			j=0;
+			validos=0;
 			while(j <this.tablero.getAncho() && !finish){
 				if(this.tablero.getColorPosicion(j, i) == this.turno){
 					validos++;
@@ -156,6 +206,7 @@ public class Partida {
 //		Comprobamos en vertical
 		while(i <this.tablero.getAncho() && !finish){
 			j=0;
+			validos=0;
 			while(j <this.tablero.getAlto()){
 				if(this.tablero.getColorPosicion(i, j) == this.turno ){
 					validos++;
@@ -168,6 +219,53 @@ public class Partida {
 			}
 			i++;
 		}
+		i=0;j=0;
+		if(validos < 4)
+			validos = 0;
+//		Comprobamos en diagonal
+		while(i < this.tablero.getAncho() && !finish){
+			j=0;
+			while(j <this.tablero.getAlto() && !finish){
+				k=0;
+				validos=0;
+				while(i+k < this.tablero.getAncho() && j+k < this.tablero.getAlto()){
+					if(this.tablero.getColorPosicion(i+k, j+k) == this.turno ){
+						validos++;
+					}else{
+						validos=0;
+					}	
+					if(validos > 3)
+						finish=true;
+					k++;
+				}
+				j++;
+			}
+			i++;
+		}
+		i=0;j=0;k=0;
+		if(validos < 4)
+			validos = 0;
+//		comprobamos diagonal inverso
+		while(i < this.tablero.getAncho() && !finish){
+			j=3;
+			while(j <this.tablero.getAlto() && !finish){
+				k=0;
+				validos=0;
+				while(i+k+3 < this.tablero.getAncho() /*&& i+k < this.tablero.getAncho()*/ && j-k >=0 && this.tablero.getColorPosicion(i+k, j-k) != Ficha.VACIA){
+					if(this.tablero.getColorPosicion(i+k, j-k) == this.turno ){
+						validos++;
+					}else{
+						validos=0;
+					}	
+					if(validos > 3)
+						finish=true;
+					k++;
+				}
+				j++;
+			}
+			i++;
+		}
+		
 		return finish;
 	}
 }

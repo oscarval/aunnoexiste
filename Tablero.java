@@ -48,7 +48,7 @@ public class Tablero {
  * @return
  */
 	public void insertaFicha( Ficha color,int fila, int columna){		
-		this.tablero[columna-1][fila] = color;
+		this.tablero[columna][fila] = color;
 	}
 /**
  * RETORNAMOS EL COLOR DE LA FICHA EN DICHA POSICION 
