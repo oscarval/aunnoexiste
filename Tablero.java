@@ -8,15 +8,6 @@ public class Tablero {
 
 /**
  * CONSTRUCTORA: INCIAMOS EL TABLERO
- * por defecto alto=0, ancho=0
- */
-	public Tablero(){
-		this.ancho = 0;
-		this.alto = 0;
-		this.tablero = new Ficha[0][0];
-	}
-/**
- * CONSTRUCTORA: INCIAMOS EL TABLERO
  * @param ancho tipo int: del tablero
  * @param alto tipo int: del tablero
  */
@@ -28,7 +19,7 @@ public class Tablero {
 	
 /**
  * CONSULTA DE ALTO
- * @return  tipo int: alto del tablero
+ * @return  alto del tablero
  */
 	public int getAlto(){
 		return this.alto;
@@ -36,25 +27,24 @@ public class Tablero {
 	
 /**
  * 	CONSULTA DE ANCHO
- * @return tipo int: ancho del tablero
+ * @return  ancho del tablero
  */
 	public int getAncho(){
 		return this.ancho;
 	}
 /**
- * INSERTAMOS LA FICHA, QUE SE PASA COMO PARAMETRO, 	
- * @param color
- * @param columna
- * @return
+ * INSERTAMOS LA FICHA EN EL TABLERO	
+ * @param color Ficha a insertar
+ * @param columna Número de columna
  */
 	public void insertaFicha( Ficha color,int fila, int columna){		
 		this.tablero[columna][fila] = color;
 	}
 /**
  * RETORNAMOS EL COLOR DE LA FICHA EN DICHA POSICION 
- * @param fila
- * @param col
- * @return
+ * @param fila Número de fila
+ * @param col Númeor de columna
+ * @return La Ficha en esa posición del tablero
  */
 	public Ficha getColorPosicion(int col, int fila){
 		return this.tablero[col][fila];
@@ -63,14 +53,16 @@ public class Tablero {
  * 	DEVUELVE EL TABLERO A PINTAR	
  */
 	public String toString(){
-		String lineas="";
+		String lineas="" + System.getProperty("line.separator");
 		String cabecera="|";
 		for(int i=1; i <= this.ancho; i++)
 			cabecera = cabecera + i;
 		cabecera = cabecera + "|" + System.getProperty("line.separator");
-		for(int i=this.alto-1; i>=0 ; i--){
+		for(int i=this.alto-1; i>=0 ; i--)
+		{
 			lineas = lineas + "|";
-			for(int j=0; j < this.ancho; j++){
+			for(int j=0; j < this.ancho; j++)
+			{
 				lineas = lineas + this.tablero[j][i].toString();
 			}
 			lineas = lineas +"|"+ System.getProperty("line.separator");
@@ -79,11 +71,12 @@ public class Tablero {
 	}
 /**
  * INICIA EL TABLERO CON FICHAS VACIAS	
- * @param color
  */
 	public void iniciarTableroVacio(){
-		for(int i=0; i < this.alto; i++){
-			for(int j=0; j < this.ancho; j++){
+		for(int i=0; i < this.alto; i++)
+		{
+			for(int j=0; j < this.ancho; j++)
+			{
 				this.tablero[j][i] = Ficha.VACIA;
 			}
 		}

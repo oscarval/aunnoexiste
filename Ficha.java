@@ -6,7 +6,7 @@ public enum Ficha {
  * RETORNA LA CONVERSIÓN DE LA FICHA A STRING (x,o)	
  */
 	public String toString(){
-		String ficha="-";
+		String ficha=" ";
 		if(this == BLANCA)
 			ficha = "x";
 		else if(this == NEGRA)

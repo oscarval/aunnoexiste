@@ -4,14 +4,23 @@ public class Pila {
 	public static final int MAX_PILA = 10;
 	private int[] undoStack;
 	private int numUndo;
-	
+/**
+ * CONTRUCTORA QUE INCIALIZA LA PILA	
+ */
 	public Pila(){
 		this.undoStack = new int[MAX_PILA];
 		this.numUndo = 0;
 	}
 /**
+ * REINICIA LA PILA, PONIENDO EL CONTADOR DEL ARRAY A 0	
+ */
+	public void reiniciarPila(){
+		this.numUndo = 0;
+	}
+	
+/**
  * 	PONER MOVIMIENTO(COLUMNA) EN LA PILA	
- * @param col
+ * @param col Número de columna
  */
 	public void poner(int col){
 		if(!this.estaLlena()){
@@ -28,7 +37,7 @@ public class Pila {
 	}
 /**
  * OBTIENE EL ULTIMO VALOR DE LA PILA	
- * @return
+ * @return Número del último movimiento(columna) que se ha realizado
  */
 	public int sacar(){
 		int col=-1;
@@ -40,7 +49,7 @@ public class Pila {
 	}
 /**
  * COMPROBAR SI LA PILA ESTA VACIA	
- * @return
+ * @return Booleano si esta vacia o no
  */
 	private boolean estaVacia(){
 		boolean ok=false;
@@ -50,7 +59,7 @@ public class Pila {
 	}
 /**
  * COMPROBAR SI LA PILA ESTA LLENA
- * @return
+ * @return Booleano si esta llena o no
  */
 	private boolean estaLlena(){
 		boolean ok=false;

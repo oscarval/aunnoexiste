@@ -4,11 +4,11 @@ import java.util.Scanner;
 public class Main {
 	private static Scanner in = new Scanner(System.in);
 	public static void main(String[] args) {
-//		CREAR PARTIDA VAC�A
+//		CREAR PARTIDA VACIA
 		Partida partida = new Partida(); 
-//		CRAER CONTROLADOR
+//		CREAR CONTROLADOR
 		Controlador controlador = new Controlador(partida, in);
-//		LANZAMOS LA EJECUCI�N DEL JUEGO CON LA PARTIDA VAC�A
+//		LANZAMOS LA EJECUCION DEL JUEGO CON LA PARTIDA VACIA
 		controlador.run();
 	}
 
